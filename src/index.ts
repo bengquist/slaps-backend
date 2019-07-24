@@ -6,6 +6,7 @@ import { ApolloServer } from "apollo-server-express";
 import typeDefs from "./schema/typeDefs";
 import resolvers from "./schema/resolvers";
 import models from "./models";
+import "./context/db";
 
 const app = express();
 
@@ -15,8 +16,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: {
-    models,
-    me: models.users[1]
+    models
   }
 });
 
