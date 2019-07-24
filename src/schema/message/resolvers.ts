@@ -1,21 +1,26 @@
 import uuidv4 from "uuid/v4";
+import {
+  QueryResolvers,
+  MutationResolvers,
+  MessageResolvers
+} from "../../types/types";
 
-const Query = {
+const Query: QueryResolvers.Resolvers = {
   messages: (parent, args, { models }) => {
     return Object.values(models.messages);
   },
   message: (parent, { id }, { models }) => {
-    return models.messages[id];
+    return models.messages[0];
   }
 };
 
-const Mutation = {
+const Mutation: MutationResolvers.Resolvers = {
   createMessage: (parent, { text }, { me, models }) => {
     const id = uuidv4();
     const message = {
       id,
       text,
-      userId: me.id
+      user: me
     };
 
     models.messages[id] = message;
@@ -37,9 +42,9 @@ const Mutation = {
   }
 };
 
-const Message = {
+const Message: MessageResolvers.Resolvers = {
   user: (message, args, { models }) => {
-    return models.users[message.userId];
+    return models.users[message.user.id];
   }
 };
 
