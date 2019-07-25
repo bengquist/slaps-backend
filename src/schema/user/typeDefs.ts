@@ -12,5 +12,11 @@ const typeDefs = gql`
     username: String!
     messages: [Message!]
   }
+
+  type User @entity {
+    id: ID! @id
+    username: String! @column
+    messageIds: [ID!] @column
+  }
 `;
 export default typeDefs;

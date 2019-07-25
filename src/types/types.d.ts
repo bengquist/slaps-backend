@@ -1,5 +1,11 @@
 export type Maybe<T> = T | null;
 
+export interface AdditionalEntityFields {
+  path?: Maybe<string>;
+
+  type?: Maybe<string>;
+}
+
 export type Date = any;
 
 // ====================================================
@@ -30,6 +36,8 @@ export interface Message {
   text: string;
 
   user: User;
+
+  userId: string;
 }
 
 export interface User {
@@ -38,6 +46,8 @@ export interface User {
   username: string;
 
   messages?: Maybe<Message[]>;
+
+  messageIds?: Maybe<string[]>;
 }
 
 export interface Mutation {
@@ -188,6 +198,8 @@ export namespace MessageResolvers {
     text?: TextResolver<string, TypeParent, TContext>;
 
     user?: UserResolver<User, TypeParent, TContext>;
+
+    userId?: UserIdResolver<string, TypeParent, TContext>;
   }
 
   export type IdResolver<
@@ -205,6 +217,11 @@ export namespace MessageResolvers {
     Parent = Message,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
+  export type UserIdResolver<
+    R = string,
+    Parent = Message,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
 }
 
 export namespace UserResolvers {
@@ -214,6 +231,8 @@ export namespace UserResolvers {
     username?: UsernameResolver<string, TypeParent, TContext>;
 
     messages?: MessagesResolver<Maybe<Message[]>, TypeParent, TContext>;
+
+    messageIds?: MessageIdsResolver<Maybe<string[]>, TypeParent, TContext>;
   }
 
   export type IdResolver<
@@ -228,6 +247,11 @@ export namespace UserResolvers {
   > = Resolver<R, Parent, TContext>;
   export type MessagesResolver<
     R = Maybe<Message[]>,
+    Parent = User,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+  export type MessageIdsResolver<
+    R = Maybe<string[]>,
     Parent = User,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
@@ -279,6 +303,72 @@ export namespace SubscriptionResolvers {
   > = SubscriptionResolver<R, Parent, TContext>;
 }
 
+export type UnionDirectiveResolver<Result> = DirectiveResolverFn<
+  Result,
+  UnionDirectiveArgs,
+  MyContext
+>;
+export interface UnionDirectiveArgs {
+  discriminatorField?: Maybe<string>;
+}
+
+export type AbstractEntityDirectiveResolver<Result> = DirectiveResolverFn<
+  Result,
+  AbstractEntityDirectiveArgs,
+  MyContext
+>;
+export interface AbstractEntityDirectiveArgs {
+  discriminatorField: string;
+}
+
+export type EntityDirectiveResolver<Result> = DirectiveResolverFn<
+  Result,
+  EntityDirectiveArgs,
+  MyContext
+>;
+export interface EntityDirectiveArgs {
+  embedded?: Maybe<boolean>;
+
+  additionalFields?: Maybe<(Maybe<AdditionalEntityFields>)[]>;
+}
+
+export type ColumnDirectiveResolver<Result> = DirectiveResolverFn<
+  Result,
+  ColumnDirectiveArgs,
+  MyContext
+>;
+export interface ColumnDirectiveArgs {
+  name?: Maybe<string>;
+
+  overrideType?: Maybe<string>;
+
+  overrideIsArray?: Maybe<boolean>;
+}
+
+export type IdDirectiveResolver<Result> = DirectiveResolverFn<
+  Result,
+  {},
+  MyContext
+>;
+export type LinkDirectiveResolver<Result> = DirectiveResolverFn<
+  Result,
+  {},
+  MyContext
+>;
+export type EmbeddedDirectiveResolver<Result> = DirectiveResolverFn<
+  Result,
+  {},
+  MyContext
+>;
+export type MapDirectiveResolver<Result> = DirectiveResolverFn<
+  Result,
+  MapDirectiveArgs,
+  MyContext
+>;
+export interface MapDirectiveArgs {
+  path: string;
+}
+
 /** Directs the executor to skip this field or fragment when the `if` argument is true. */
 export type SkipDirectiveResolver<Result> = DirectiveResolverFn<
   Result,
@@ -326,7 +416,28 @@ export type IResolvers<TContext = MyContext> = {
 } & { [typeName: string]: never };
 
 export type IDirectiveResolvers<Result> = {
+  union?: UnionDirectiveResolver<Result>;
+  abstractEntity?: AbstractEntityDirectiveResolver<Result>;
+  entity?: EntityDirectiveResolver<Result>;
+  column?: ColumnDirectiveResolver<Result>;
+  id?: IdDirectiveResolver<Result>;
+  link?: LinkDirectiveResolver<Result>;
+  embedded?: EmbeddedDirectiveResolver<Result>;
+  map?: MapDirectiveResolver<Result>;
   skip?: SkipDirectiveResolver<Result>;
   include?: IncludeDirectiveResolver<Result>;
   deprecated?: DeprecatedDirectiveResolver<Result>;
 } & { [directiveName: string]: never };
+import { ObjectID } from "mongodb";
+
+export interface MessageDbObject {
+  _id: ObjectID;
+  text: string;
+  userId: string;
+}
+
+export interface UserDbObject {
+  _id: ObjectID;
+  username: string;
+  messageIds: Maybe<string[]>;
+}

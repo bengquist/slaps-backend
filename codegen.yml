@@ -11,3 +11,4 @@ generates:
       - typescript-common
       - typescript-server
       - typescript-resolvers
+      - typescript-mongodb
