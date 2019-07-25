@@ -36,8 +36,6 @@ export interface Message {
   text: string;
 
   user: User;
-
-  userId: string;
 }
 
 export interface User {
@@ -45,9 +43,9 @@ export interface User {
 
   username: string;
 
-  messages?: Maybe<Message[]>;
+  email: string;
 
-  messageIds?: Maybe<string[]>;
+  messages?: Maybe<Message[]>;
 }
 
 export interface Mutation {
@@ -56,6 +54,14 @@ export interface Mutation {
   deleteMessage: boolean;
 
   _?: Maybe<boolean>;
+
+  signUp: Token;
+
+  signIn: Token;
+}
+
+export interface Token {
+  token: string;
 }
 
 export interface Subscription {
@@ -93,6 +99,18 @@ export interface CreateMessageMutationArgs {
 }
 export interface DeleteMessageMutationArgs {
   id: string;
+}
+export interface SignUpMutationArgs {
+  username: string;
+
+  email: string;
+
+  password: string;
+}
+export interface SignInMutationArgs {
+  login: string;
+
+  password: string;
 }
 
 import {
@@ -214,8 +232,6 @@ export namespace MessageResolvers {
     text?: TextResolver<string, TypeParent, TContext>;
 
     user?: UserResolver<User, TypeParent, TContext>;
-
-    userId?: UserIdResolver<string, TypeParent, TContext>;
   }
 
   export type IdResolver<
@@ -233,11 +249,6 @@ export namespace MessageResolvers {
     Parent = Message,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
-  export type UserIdResolver<
-    R = string,
-    Parent = Message,
-    TContext = MyContext
-  > = Resolver<R, Parent, TContext>;
 }
 
 export namespace UserResolvers {
@@ -246,9 +257,9 @@ export namespace UserResolvers {
 
     username?: UsernameResolver<string, TypeParent, TContext>;
 
-    messages?: MessagesResolver<Maybe<Message[]>, TypeParent, TContext>;
+    email?: EmailResolver<string, TypeParent, TContext>;
 
-    messageIds?: MessageIdsResolver<Maybe<string[]>, TypeParent, TContext>;
+    messages?: MessagesResolver<Maybe<Message[]>, TypeParent, TContext>;
   }
 
   export type IdResolver<
@@ -261,13 +272,13 @@ export namespace UserResolvers {
     Parent = User,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
-  export type MessagesResolver<
-    R = Maybe<Message[]>,
+  export type EmailResolver<
+    R = string,
     Parent = User,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
-  export type MessageIdsResolver<
-    R = Maybe<string[]>,
+  export type MessagesResolver<
+    R = Maybe<Message[]>,
     Parent = User,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
@@ -280,6 +291,10 @@ export namespace MutationResolvers {
     deleteMessage?: DeleteMessageResolver<boolean, TypeParent, TContext>;
 
     _?: _Resolver<Maybe<boolean>, TypeParent, TContext>;
+
+    signUp?: SignUpResolver<Token, TypeParent, TContext>;
+
+    signIn?: SignInResolver<Token, TypeParent, TContext>;
   }
 
   export type CreateMessageResolver<
@@ -303,6 +318,41 @@ export namespace MutationResolvers {
   export type _Resolver<
     R = Maybe<boolean>,
     Parent = {},
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+  export type SignUpResolver<
+    R = Token,
+    Parent = {},
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext, SignUpArgs>;
+  export interface SignUpArgs {
+    username: string;
+
+    email: string;
+
+    password: string;
+  }
+
+  export type SignInResolver<
+    R = Token,
+    Parent = {},
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext, SignInArgs>;
+  export interface SignInArgs {
+    login: string;
+
+    password: string;
+  }
+}
+
+export namespace TokenResolvers {
+  export interface Resolvers<TContext = MyContext, TypeParent = Token> {
+    token?: TokenResolver<string, TypeParent, TContext>;
+  }
+
+  export type TokenResolver<
+    R = string,
+    Parent = Token,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
 }
@@ -479,6 +529,7 @@ export type IResolvers<TContext = MyContext> = {
   Message?: MessageResolvers.Resolvers<TContext>;
   User?: UserResolvers.Resolvers<TContext>;
   Mutation?: MutationResolvers.Resolvers<TContext>;
+  Token?: TokenResolvers.Resolvers<TContext>;
   Subscription?: SubscriptionResolvers.Resolvers<TContext>;
   MessageSchema?: MessageSchemaResolvers.Resolvers<TContext>;
   UserSchema?: UserSchemaResolvers.Resolvers<TContext>;
