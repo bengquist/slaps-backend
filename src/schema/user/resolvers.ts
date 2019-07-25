@@ -1,21 +1,25 @@
 import { QueryResolvers, UserResolvers } from "../../generated/types";
 
 const Query: QueryResolvers.Resolvers = {
-  users: (parent, args, { models }) => {
-    console.log(models.user._id);
-    return [];
+  users: async (parent, args, { models }) => {
+    console.log(models.User);
+    return await models.User.find({});
   },
-  user: (parent, { id }, { models }) => {
-    return null;
+  user: async (parent, { id }, { models }) => {
+    return await models.User.findById({ id });
   },
-  me: (parent, args, { me }) => {
-    return me;
+  me: async (parent, args, { me, models }) => {
+    if (!me) {
+      return null;
+    }
+
+    return await models.User.findById({ id: me.id });
   }
 };
 
 const User: UserResolvers.Resolvers = {
-  messages: (user, args, { models }) => {
-    return [];
+  messages: async (user, args, { models }) => {
+    return await models.Message.find({});
   }
 };
 

@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 
-const url = process.env.DB_URL;
-
-mongoose.connect(url, { useNewUrlParser: true });
+mongoose.connect(process.env.DB_URL, {
+  useNewUrlParser: true,
+  dbName: "slaps"
+});
 mongoose.connection.once("open", () => console.log(`Mongo is connected`));

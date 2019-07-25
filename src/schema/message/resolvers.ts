@@ -1,4 +1,3 @@
-import uuidv4 from "uuid/v4";
 import {
   QueryResolvers,
   MutationResolvers,
@@ -7,34 +6,26 @@ import {
 
 const Query: QueryResolvers.Resolvers = {
   messages: (parent, args, { models }) => {
-    return [];
+    return models.Message.find({});
   },
-  message: (parent, { id }, { models, me }) => {
-    return { id: "yo", text: "ay", user: me, userId: "aa" };
+  message: (parent, { id }, { models }) => {
+    return models.Message.findOne({ id });
   }
 };
 
 const Mutation: MutationResolvers.Resolvers = {
-  createMessage: (parent, { text }, { me, models }) => {
-    const id = uuidv4();
-    const message = {
-      id,
-      text,
-      user: me,
-      userId: "wut"
-    };
-
-    return message;
+  createMessage: async (parent, { text }, { me, models }) => {
+    return await models.Message.create({ text, userId: me.id });
   },
 
-  deleteMessage: (parent, { id }, { models }) => {
-    return true;
+  deleteMessage: async (parent, { id }, { models }) => {
+    return await models.Message.deleteOne({ id });
   }
 };
 
 const Message: MessageResolvers.Resolvers = {
   user: (message, args, { models }) => {
-    return { id: "yo", username: "a" };
+    return models.User.find({ id: message.userId });
   }
 };
 
