@@ -62,6 +62,22 @@ export interface Subscription {
   _?: Maybe<boolean>;
 }
 
+export interface MessageSchema {
+  id: string;
+
+  text: string;
+
+  userId: string;
+}
+
+export interface UserSchema {
+  id: string;
+
+  username: string;
+
+  messageIds?: Maybe<string[]>;
+}
+
 // ====================================================
 // Arguments
 // ====================================================
@@ -303,6 +319,58 @@ export namespace SubscriptionResolvers {
   > = SubscriptionResolver<R, Parent, TContext>;
 }
 
+export namespace MessageSchemaResolvers {
+  export interface Resolvers<TContext = MyContext, TypeParent = MessageSchema> {
+    id?: IdResolver<string, TypeParent, TContext>;
+
+    text?: TextResolver<string, TypeParent, TContext>;
+
+    userId?: UserIdResolver<string, TypeParent, TContext>;
+  }
+
+  export type IdResolver<
+    R = string,
+    Parent = MessageSchema,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+  export type TextResolver<
+    R = string,
+    Parent = MessageSchema,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+  export type UserIdResolver<
+    R = string,
+    Parent = MessageSchema,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+}
+
+export namespace UserSchemaResolvers {
+  export interface Resolvers<TContext = MyContext, TypeParent = UserSchema> {
+    id?: IdResolver<string, TypeParent, TContext>;
+
+    username?: UsernameResolver<string, TypeParent, TContext>;
+
+    messageIds?: MessageIdsResolver<Maybe<string[]>, TypeParent, TContext>;
+  }
+
+  export type IdResolver<
+    R = string,
+    Parent = UserSchema,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+  export type UsernameResolver<
+    R = string,
+    Parent = UserSchema,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+  export type MessageIdsResolver<
+    R = Maybe<string[]>,
+    Parent = UserSchema,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+}
+
 export type UnionDirectiveResolver<Result> = DirectiveResolverFn<
   Result,
   UnionDirectiveArgs,
@@ -412,6 +480,8 @@ export type IResolvers<TContext = MyContext> = {
   User?: UserResolvers.Resolvers<TContext>;
   Mutation?: MutationResolvers.Resolvers<TContext>;
   Subscription?: SubscriptionResolvers.Resolvers<TContext>;
+  MessageSchema?: MessageSchemaResolvers.Resolvers<TContext>;
+  UserSchema?: UserSchemaResolvers.Resolvers<TContext>;
   Date?: GraphQLScalarType;
 } & { [typeName: string]: never };
 
@@ -430,13 +500,13 @@ export type IDirectiveResolvers<Result> = {
 } & { [directiveName: string]: never };
 import { ObjectID } from "mongodb";
 
-export interface MessageDbObject {
+export interface MessageSchemaDbObject {
   _id: ObjectID;
   text: string;
   userId: string;
 }
 
-export interface UserDbObject {
+export interface UserSchemaDbObject {
   _id: ObjectID;
   username: string;
   messageIds: Maybe<string[]>;

@@ -1,8 +1,8 @@
-import { QueryResolvers, UserResolvers } from "../../types/types";
+import { QueryResolvers, UserResolvers } from "../../generated/types";
 
 const Query: QueryResolvers.Resolvers = {
   users: (parent, args, { models }) => {
-    return Object.values(models.users);
+    return models.users[0];
   },
   user: (parent, { id }, { models }) => {
     return models.users[0];

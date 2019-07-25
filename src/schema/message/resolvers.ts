@@ -3,7 +3,7 @@ import {
   QueryResolvers,
   MutationResolvers,
   MessageResolvers
-} from "../../types/types";
+} from "../../generated/types";
 
 const Query: QueryResolvers.Resolvers = {
   messages: (parent, args, { models }) => {
@@ -20,7 +20,8 @@ const Mutation: MutationResolvers.Resolvers = {
     const message = {
       id,
       text,
-      user: me
+      user: me,
+      userId: "wut"
     };
 
     models.messages[id] = message;

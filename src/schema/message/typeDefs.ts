@@ -15,9 +15,10 @@ const typeDefs = gql`
     id: ID!
     text: String!
     user: User!
+    userId: String! @column
   }
 
-  type Message @entity {
+  type MessageSchema @entity {
     id: ID! @id
     text: String! @column
     userId: String! @column
