@@ -11,7 +11,7 @@ import {
   UserInputError,
   ForbiddenError
 } from "apollo-server-express";
-import { skip } from "graphql-resolvers";
+import { skip, combineResolvers } from "graphql-resolvers";
 
 const generatePasswordHash = async (password: string) => {
   const saltRounds = 10;
@@ -24,8 +24,8 @@ const validatePassword = async function(password: string) {
 };
 
 const createToken = async (user: User, secret: string, expiresIn: string) => {
-  const { id, email, username } = user;
-  return await jwt.sign({ id, email, username }, secret, {
+  const { id, email, username, role } = user;
+  return await jwt.sign({ id, email, username, role }, secret, {
     expiresIn
   });
 };
@@ -47,6 +47,12 @@ export const isMessageOwner = async (parent, { id }, { models, me }) => {
 
   return skip;
 };
+
+export const isAdmin = combineResolvers(
+  isAuthenticated,
+  (parent, args, { me: { role } }) =>
+    role === "ADMIN" ? skip : new ForbiddenError("Not authorized as admin.")
+);
 
 const Query: QueryResolvers.Resolvers = {
   users: async (parent, args, { models }) => {
@@ -93,7 +99,15 @@ const Mutation: MutationResolvers.Resolvers = {
     }
 
     return { token: createToken(user, secret, "30m") };
-  }
+  },
+  //@ts-ignore
+  deleteUser: combineResolvers(
+    isAdmin,
+    //@ts-ignore
+    async (parent, { id }, { models }) => {
+      return await models.User.deleteOne({ id });
+    }
+  )
 };
 
 const User: UserResolvers.Resolvers = {

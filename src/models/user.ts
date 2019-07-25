@@ -5,5 +5,6 @@ export default new Schema({
   username: String,
   email: String!,
   password: String!,
-  messageIds: [Number]
+  messageIds: [Number],
+  role: String
 });

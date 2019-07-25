@@ -45,6 +45,8 @@ export interface User {
 
   email: string;
 
+  role?: Maybe<string>;
+
   messages?: Maybe<Message[]>;
 }
 
@@ -58,6 +60,8 @@ export interface Mutation {
   signUp: Token;
 
   signIn: Token;
+
+  deleteUser: boolean;
 }
 
 export interface Token {
@@ -111,6 +115,9 @@ export interface SignInMutationArgs {
   login: string;
 
   password: string;
+}
+export interface DeleteUserMutationArgs {
+  id: string;
 }
 
 import {
@@ -259,6 +266,8 @@ export namespace UserResolvers {
 
     email?: EmailResolver<string, TypeParent, TContext>;
 
+    role?: RoleResolver<Maybe<string>, TypeParent, TContext>;
+
     messages?: MessagesResolver<Maybe<Message[]>, TypeParent, TContext>;
   }
 
@@ -274,6 +283,11 @@ export namespace UserResolvers {
   > = Resolver<R, Parent, TContext>;
   export type EmailResolver<
     R = string,
+    Parent = User,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+  export type RoleResolver<
+    R = Maybe<string>,
     Parent = User,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
@@ -295,6 +309,8 @@ export namespace MutationResolvers {
     signUp?: SignUpResolver<Token, TypeParent, TContext>;
 
     signIn?: SignInResolver<Token, TypeParent, TContext>;
+
+    deleteUser?: DeleteUserResolver<boolean, TypeParent, TContext>;
   }
 
   export type CreateMessageResolver<
@@ -342,6 +358,15 @@ export namespace MutationResolvers {
     login: string;
 
     password: string;
+  }
+
+  export type DeleteUserResolver<
+    R = boolean,
+    Parent = {},
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext, DeleteUserArgs>;
+  export interface DeleteUserArgs {
+    id: string;
   }
 }
 
