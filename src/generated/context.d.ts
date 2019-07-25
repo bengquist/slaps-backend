@@ -1,4 +1,6 @@
+import { UserSchemaDbObject, MessageSchemaDbObject } from "./types";
+
 export type MyContext = {
-  models: any;
+  models: { user: UserSchemaDbObject; message: MessageSchemaDbObject };
   me: any;
 };

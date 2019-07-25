@@ -7,10 +7,10 @@ import {
 
 const Query: QueryResolvers.Resolvers = {
   messages: (parent, args, { models }) => {
-    return Object.values(models.messages);
+    return [];
   },
-  message: (parent, { id }, { models }) => {
-    return models.messages[0];
+  message: (parent, { id }, { models, me }) => {
+    return { id: "yo", text: "ay", user: me, userId: "aa" };
   }
 };
 
@@ -24,28 +24,17 @@ const Mutation: MutationResolvers.Resolvers = {
       userId: "wut"
     };
 
-    models.messages[id] = message;
-    models.users[me.id].messageIds.push(id);
-
     return message;
   },
 
   deleteMessage: (parent, { id }, { models }) => {
-    const { [id]: message, ...otherMessages } = models.messages;
-
-    if (!message) {
-      return false;
-    }
-
-    models.messages = otherMessages;
-
     return true;
   }
 };
 
 const Message: MessageResolvers.Resolvers = {
   user: (message, args, { models }) => {
-    return models.users[message.user.id];
+    return { id: "yo", username: "a" };
   }
 };
 

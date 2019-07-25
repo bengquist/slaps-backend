@@ -2,10 +2,11 @@ import { QueryResolvers, UserResolvers } from "../../generated/types";
 
 const Query: QueryResolvers.Resolvers = {
   users: (parent, args, { models }) => {
-    return models.users[0];
+    console.log(models.user._id);
+    return [];
   },
   user: (parent, { id }, { models }) => {
-    return models.users[0];
+    return null;
   },
   me: (parent, args, { me }) => {
     return me;
