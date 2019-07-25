@@ -35,6 +35,8 @@ export interface Message {
 
   text: string;
 
+  createdAt: Date;
+
   user: User;
 }
 
@@ -238,6 +240,8 @@ export namespace MessageResolvers {
 
     text?: TextResolver<string, TypeParent, TContext>;
 
+    createdAt?: CreatedAtResolver<Date, TypeParent, TContext>;
+
     user?: UserResolver<User, TypeParent, TContext>;
   }
 
@@ -248,6 +252,11 @@ export namespace MessageResolvers {
   > = Resolver<R, Parent, TContext>;
   export type TextResolver<
     R = string,
+    Parent = Message,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+  export type CreatedAtResolver<
+    R = Date,
     Parent = Message,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
