@@ -35,11 +35,5 @@ const typeDefs = gql`
   type MessageCreated {
     message: Message!
   }
-
-  type MessageSchema @entity {
-    id: ID! @id
-    text: String! @column
-    userId: String! @column
-  }
 `;
 export default typeDefs;

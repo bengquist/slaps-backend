@@ -1,8 +1,3 @@
-import {
-  QueryResolvers,
-  MutationResolvers,
-  MessageResolvers
-} from "../../generated/types";
 import { combineResolvers } from "graphql-resolvers";
 import { isAuthenticated, isMessageOwner } from "../user/resolvers";
 import pubsub, { EVENTS } from "../subscriptions";
@@ -12,7 +7,7 @@ const toCursorHash = (string: string) => Buffer.from(string).toString("base64");
 const fromCursorHash = (string: string) =>
   Buffer.from(string, "base64").toString("ascii");
 
-const Query: QueryResolvers.Resolvers = {
+const Query = {
   messages: async (parent, { cursor, limit = 100 }, { models, me }) => {
     const query = cursor ? { createdAt: { $lte: fromCursorHash(cursor) } } : {};
 
@@ -41,7 +36,7 @@ const Query: QueryResolvers.Resolvers = {
   }
 };
 
-const Mutation: MutationResolvers.Resolvers = {
+const Mutation = {
   //@ts-ignore
   createMessage: combineResolvers(
     isAuthenticated,
@@ -71,7 +66,7 @@ const Mutation: MutationResolvers.Resolvers = {
   )
 };
 
-const Message: MessageResolvers.Resolvers = {
+const Message = {
   user: (message, args, { models }) => {
     //@ts-ignore
     return models.User.findById(message.userId);

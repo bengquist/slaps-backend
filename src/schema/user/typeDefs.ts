@@ -24,11 +24,5 @@ const typeDefs = gql`
     role: String
     messages: [Message!]
   }
-
-  type UserSchema @entity {
-    id: ID! @id
-    username: String! @column
-    messageIds: [ID!] @column
-  }
 `;
 export default typeDefs;

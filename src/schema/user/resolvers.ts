@@ -1,9 +1,3 @@
-import {
-  QueryResolvers,
-  UserResolvers,
-  MutationResolvers,
-  User
-} from "../../generated/types";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
@@ -23,7 +17,7 @@ const validatePassword = async function(password: string) {
   return await bcrypt.compare(password, this.password);
 };
 
-const createToken = async (user: User, secret: string, expiresIn: string) => {
+const createToken = async (user: any, secret: string, expiresIn: string) => {
   const { _id, email, username, role } = user;
   return await jwt.sign({ id: _id, email, username, role }, secret, {
     expiresIn
@@ -54,7 +48,7 @@ export const isAdmin = combineResolvers(
     role === "ADMIN" ? skip : new ForbiddenError("Not authorized as admin.")
 );
 
-const Query: QueryResolvers.Resolvers = {
+const Query = {
   users: async (parent, args, { models }) => {
     console.log(models.User);
     return await models.User.find({});
@@ -71,7 +65,7 @@ const Query: QueryResolvers.Resolvers = {
   }
 };
 
-const Mutation: MutationResolvers.Resolvers = {
+const Mutation = {
   //@ts-ignore
   signUp: async (parent, { username, email, password }, { models, secret }) => {
     const hashedPassword = await generatePasswordHash(password);
@@ -110,7 +104,7 @@ const Mutation: MutationResolvers.Resolvers = {
   )
 };
 
-const User: UserResolvers.Resolvers = {
+const User = {
   messages: async (user, args, { models }) => {
     return await models.Message.find({ userId: user._id });
   }
