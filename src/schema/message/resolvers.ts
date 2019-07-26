@@ -1,11 +1,7 @@
 import { combineResolvers } from "graphql-resolvers";
 import pubsub, { EVENTS } from "../subscriptions";
 import { isAuthenticated, isMessageOwner } from "../user/helpers";
-
-const toCursorHash = (string: string) => Buffer.from(string).toString("base64");
-
-const fromCursorHash = (string: string) =>
-  Buffer.from(string, "base64").toString("ascii");
+import { fromCursorHash, toCursorHash } from "./helpers";
 
 const Query = {
   messages: async (parent, { cursor, limit = 100 }, { models, me }) => {
