@@ -1,6 +1,7 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
+import http from "http";
 import { ApolloServer, AuthenticationError } from "apollo-server-express";
 import jwt from "jsonwebtoken";
 
@@ -18,20 +19,32 @@ app.use(cors());
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async ({ req }) => {
-    const me = await getMe(req);
+  //@ts-ignore
+  context: async ({ req, connection }) => {
+    if (connection) {
+      return {
+        models
+      };
+    }
 
-    return {
-      models,
-      me,
-      secret: process.env.SECRET
-    };
+    if (req) {
+      const me = await getMe(req);
+
+      return {
+        models,
+        me,
+        secret: process.env.SECRET
+      };
+    }
   }
 });
 
 server.applyMiddleware({ app, path: "/graphql" });
 
-app.listen({ port: PORT }, () => {
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
+
+httpServer.listen({ port: PORT }, () => {
   console.log(`Apollo Server on http://localhost:${PORT}/graphql`);
 });
 

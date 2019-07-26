@@ -83,7 +83,13 @@ export interface Token {
 }
 
 export interface Subscription {
+  messageCreated: MessageCreated;
+
   _?: Maybe<boolean>;
+}
+
+export interface MessageCreated {
+  message: Message;
 }
 
 export interface MessageSchema {
@@ -457,14 +463,40 @@ export namespace TokenResolvers {
 
 export namespace SubscriptionResolvers {
   export interface Resolvers<TContext = MyContext, TypeParent = {}> {
+    messageCreated?: MessageCreatedResolver<
+      MessageCreated,
+      TypeParent,
+      TContext
+    >;
+
     _?: _Resolver<Maybe<boolean>, TypeParent, TContext>;
   }
 
+  export type MessageCreatedResolver<
+    R = MessageCreated,
+    Parent = {},
+    TContext = MyContext
+  > = SubscriptionResolver<R, Parent, TContext>;
   export type _Resolver<
     R = Maybe<boolean>,
     Parent = {},
     TContext = MyContext
   > = SubscriptionResolver<R, Parent, TContext>;
+}
+
+export namespace MessageCreatedResolvers {
+  export interface Resolvers<
+    TContext = MyContext,
+    TypeParent = MessageCreated
+  > {
+    message?: MessageResolver<Message, TypeParent, TContext>;
+  }
+
+  export type MessageResolver<
+    R = Message,
+    Parent = MessageCreated,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
 }
 
 export namespace MessageSchemaResolvers {
@@ -631,6 +663,7 @@ export type IResolvers<TContext = MyContext> = {
   Mutation?: MutationResolvers.Resolvers<TContext>;
   Token?: TokenResolvers.Resolvers<TContext>;
   Subscription?: SubscriptionResolvers.Resolvers<TContext>;
+  MessageCreated?: MessageCreatedResolvers.Resolvers<TContext>;
   MessageSchema?: MessageSchemaResolvers.Resolvers<TContext>;
   UserSchema?: UserSchemaResolvers.Resolvers<TContext>;
   Date?: GraphQLScalarType;

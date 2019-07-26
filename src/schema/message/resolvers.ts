@@ -5,6 +5,7 @@ import {
 } from "../../generated/types";
 import { combineResolvers } from "graphql-resolvers";
 import { isAuthenticated, isMessageOwner } from "../user/resolvers";
+import pubsub, { EVENTS } from "../subscriptions";
 
 const toCursorHash = (string: string) => Buffer.from(string).toString("base64");
 
@@ -46,10 +47,16 @@ const Mutation: MutationResolvers.Resolvers = {
     isAuthenticated,
     //@ts-ignore
     async (parent, { text }, { models, me }) => {
-      return await models.Message.create({
+      const message = await models.Message.create({
         text,
         userId: me.id
       });
+
+      pubsub.publish(EVENTS.MESSAGE.CREATED, {
+        messageCreated: { message }
+      });
+
+      return message;
     }
   ),
 
@@ -71,4 +78,10 @@ const Message: MessageResolvers.Resolvers = {
   }
 };
 
-export default { Query, Mutation, Message };
+const Subscription = {
+  messageCreated: {
+    subscribe: () => pubsub.asyncIterator(EVENTS.MESSAGE.CREATED)
+  }
+};
+
+export default { Query, Mutation, Subscription, Message };

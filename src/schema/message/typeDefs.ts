@@ -28,6 +28,14 @@ const typeDefs = gql`
     user: User!
   }
 
+  extend type Subscription {
+    messageCreated: MessageCreated!
+  }
+
+  type MessageCreated {
+    message: Message!
+  }
+
   type MessageSchema @entity {
     id: ID! @id
     text: String! @column
