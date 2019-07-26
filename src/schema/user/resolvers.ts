@@ -24,8 +24,8 @@ const validatePassword = async function(password: string) {
 };
 
 const createToken = async (user: User, secret: string, expiresIn: string) => {
-  const { id, email, username, role } = user;
-  return await jwt.sign({ id, email, username, role }, secret, {
+  const { _id, email, username, role } = user;
+  return await jwt.sign({ id: _id, email, username, role }, secret, {
     expiresIn
   });
 };
@@ -82,7 +82,7 @@ const Mutation: MutationResolvers.Resolvers = {
       password: hashedPassword
     });
 
-    return { token: createToken(user, secret, "30m") };
+    return { token: createToken(user, secret, "365d") };
   },
   //@ts-ignore
   signIn: async (parent, { login, password }, { models, secret }) => {
@@ -112,7 +112,7 @@ const Mutation: MutationResolvers.Resolvers = {
 
 const User: UserResolvers.Resolvers = {
   messages: async (user, args, { models }) => {
-    return await models.Message.find({});
+    return await models.Message.find({ userId: user._id });
   }
 };
 

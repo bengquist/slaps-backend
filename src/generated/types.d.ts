@@ -31,7 +31,7 @@ export interface Query {
 }
 
 export interface Message {
-  id: string;
+  _id: string;
 
   text: string;
 
@@ -41,7 +41,7 @@ export interface Message {
 }
 
 export interface User {
-  id: string;
+  _id: string;
 
   username: string;
 
@@ -94,6 +94,11 @@ export interface UserSchema {
 // Arguments
 // ====================================================
 
+export interface MessagesQueryArgs {
+  cursor?: Maybe<string>;
+
+  limit?: Maybe<number>;
+}
 export interface MessageQueryArgs {
   id: string;
 }
@@ -198,7 +203,13 @@ export namespace QueryResolvers {
     R = Message[],
     Parent = {},
     TContext = MyContext
-  > = Resolver<R, Parent, TContext>;
+  > = Resolver<R, Parent, TContext, MessagesArgs>;
+  export interface MessagesArgs {
+    cursor?: Maybe<string>;
+
+    limit?: Maybe<number>;
+  }
+
   export type MessageResolver<
     R = Message,
     Parent = {},
@@ -236,7 +247,7 @@ export namespace QueryResolvers {
 
 export namespace MessageResolvers {
   export interface Resolvers<TContext = MyContext, TypeParent = Message> {
-    id?: IdResolver<string, TypeParent, TContext>;
+    _id?: _IdResolver<string, TypeParent, TContext>;
 
     text?: TextResolver<string, TypeParent, TContext>;
 
@@ -245,7 +256,7 @@ export namespace MessageResolvers {
     user?: UserResolver<User, TypeParent, TContext>;
   }
 
-  export type IdResolver<
+  export type _IdResolver<
     R = string,
     Parent = Message,
     TContext = MyContext
@@ -269,7 +280,7 @@ export namespace MessageResolvers {
 
 export namespace UserResolvers {
   export interface Resolvers<TContext = MyContext, TypeParent = User> {
-    id?: IdResolver<string, TypeParent, TContext>;
+    _id?: _IdResolver<string, TypeParent, TContext>;
 
     username?: UsernameResolver<string, TypeParent, TContext>;
 
@@ -280,7 +291,7 @@ export namespace UserResolvers {
     messages?: MessagesResolver<Maybe<Message[]>, TypeParent, TContext>;
   }
 
-  export type IdResolver<
+  export type _IdResolver<
     R = string,
     Parent = User,
     TContext = MyContext

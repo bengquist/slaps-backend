@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 const typeDefs = gql`
   extend type Query {
-    messages: [Message!]!
+    messages(cursor: String, limit: Int): [Message!]!
     message(id: ID!): Message!
   }
 
@@ -12,7 +12,7 @@ const typeDefs = gql`
   }
 
   type Message {
-    id: ID!
+    _id: ID!
     text: String!
     createdAt: Date!
     user: User!

@@ -7,8 +7,13 @@ import { combineResolvers } from "graphql-resolvers";
 import { isAuthenticated, isMessageOwner } from "../user/resolvers";
 
 const Query: QueryResolvers.Resolvers = {
-  messages: (parent, args, { models }) => {
-    return models.Message.find({});
+  messages: async (parent, { cursor, limit = 100 }, { models, me }) => {
+    const query = cursor ? { createdAt: { $lte: cursor } } : {};
+
+    return await models.Message.find(query, null, {
+      limit,
+      sort: { createdAt: -1 }
+    });
   },
   message: (parent, { id }, { models }) => {
     return models.Message.findOne({ id });
@@ -42,7 +47,7 @@ const Mutation: MutationResolvers.Resolvers = {
 const Message: MessageResolvers.Resolvers = {
   user: (message, args, { models }) => {
     //@ts-ignore
-    return models.User.find({ id: message.userId });
+    return models.User.findById(message.userId);
   }
 };
 
