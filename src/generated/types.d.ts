@@ -17,7 +17,7 @@ export type Date = any;
 // ====================================================
 
 export interface Query {
-  messages: Message[];
+  messages: MessageConnection;
 
   message: Message;
 
@@ -28,6 +28,12 @@ export interface Query {
   user?: Maybe<User>;
 
   me?: Maybe<User>;
+}
+
+export interface MessageConnection {
+  edges: Message[];
+
+  pageInfo: PageInfo;
 }
 
 export interface Message {
@@ -50,6 +56,12 @@ export interface User {
   role?: Maybe<string>;
 
   messages?: Maybe<Message[]>;
+}
+
+export interface PageInfo {
+  hasNextPage: boolean;
+
+  endCursor: string;
 }
 
 export interface Mutation {
@@ -186,7 +198,7 @@ export type DirectiveResolverFn<TResult, TArgs = {}, TContext = {}> = (
 
 export namespace QueryResolvers {
   export interface Resolvers<TContext = MyContext, TypeParent = {}> {
-    messages?: MessagesResolver<Message[], TypeParent, TContext>;
+    messages?: MessagesResolver<MessageConnection, TypeParent, TContext>;
 
     message?: MessageResolver<Message, TypeParent, TContext>;
 
@@ -200,7 +212,7 @@ export namespace QueryResolvers {
   }
 
   export type MessagesResolver<
-    R = Message[],
+    R = MessageConnection,
     Parent = {},
     TContext = MyContext
   > = Resolver<R, Parent, TContext, MessagesArgs>;
@@ -241,6 +253,28 @@ export namespace QueryResolvers {
   export type MeResolver<
     R = Maybe<User>,
     Parent = {},
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+}
+
+export namespace MessageConnectionResolvers {
+  export interface Resolvers<
+    TContext = MyContext,
+    TypeParent = MessageConnection
+  > {
+    edges?: EdgesResolver<Message[], TypeParent, TContext>;
+
+    pageInfo?: PageInfoResolver<PageInfo, TypeParent, TContext>;
+  }
+
+  export type EdgesResolver<
+    R = Message[],
+    Parent = MessageConnection,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+  export type PageInfoResolver<
+    R = PageInfo,
+    Parent = MessageConnection,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
 }
@@ -314,6 +348,25 @@ export namespace UserResolvers {
   export type MessagesResolver<
     R = Maybe<Message[]>,
     Parent = User,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+}
+
+export namespace PageInfoResolvers {
+  export interface Resolvers<TContext = MyContext, TypeParent = PageInfo> {
+    hasNextPage?: HasNextPageResolver<boolean, TypeParent, TContext>;
+
+    endCursor?: EndCursorResolver<string, TypeParent, TContext>;
+  }
+
+  export type HasNextPageResolver<
+    R = boolean,
+    Parent = PageInfo,
+    TContext = MyContext
+  > = Resolver<R, Parent, TContext>;
+  export type EndCursorResolver<
+    R = string,
+    Parent = PageInfo,
     TContext = MyContext
   > = Resolver<R, Parent, TContext>;
 }
@@ -571,8 +624,10 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<Date, any> {
 
 export type IResolvers<TContext = MyContext> = {
   Query?: QueryResolvers.Resolvers<TContext>;
+  MessageConnection?: MessageConnectionResolvers.Resolvers<TContext>;
   Message?: MessageResolvers.Resolvers<TContext>;
   User?: UserResolvers.Resolvers<TContext>;
+  PageInfo?: PageInfoResolvers.Resolvers<TContext>;
   Mutation?: MutationResolvers.Resolvers<TContext>;
   Token?: TokenResolvers.Resolvers<TContext>;
   Subscription?: SubscriptionResolvers.Resolvers<TContext>;
