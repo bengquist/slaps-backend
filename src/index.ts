@@ -2,13 +2,13 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import http from "http";
-import { ApolloServer, AuthenticationError } from "apollo-server-express";
-import jwt from "jsonwebtoken";
+import { ApolloServer } from "apollo-server-express";
 
 import typeDefs from "./schema/typeDefs";
 import resolvers from "./schema/resolvers";
 import models from "./models";
 import "./context/db";
+import { getMe } from "./context/helpers";
 
 const PORT = process.env.PORT || 5000;
 
@@ -47,15 +47,3 @@ server.installSubscriptionHandlers(httpServer);
 httpServer.listen({ port: PORT }, () => {
   console.log(`Apollo Server on http://localhost:${PORT}/graphql`);
 });
-
-const getMe = async (req: any) => {
-  const token = req.headers["x-token"];
-
-  if (token) {
-    try {
-      return await jwt.verify(token, process.env.SECRET || "");
-    } catch (e) {
-      throw new AuthenticationError("Your session expired. Sign in again.");
-    }
-  }
-};
