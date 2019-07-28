@@ -9,7 +9,6 @@ import {
 
 const Query = {
   users: async (parent, args, { models }) => {
-    console.log(models.User);
     return await models.User.find({});
   },
   user: async (parent, { id }, { models }) => {

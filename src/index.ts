@@ -10,7 +10,7 @@ import models from "./models";
 import "./context/db";
 import { getMe } from "./context/helpers";
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
