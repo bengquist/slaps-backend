@@ -25,7 +25,7 @@ export const createToken = async (
 
 // --- Authorization Middleware ---
 
-export const isAuthenticated = (parent, args, { me }) => {
+export const isAuthenticated = (parent, args, { me, models }) => {
   return me ? skip : new ForbiddenError("Not authenticated as user.");
 };
 

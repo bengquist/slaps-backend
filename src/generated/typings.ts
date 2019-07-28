@@ -28,12 +28,16 @@ export interface NexusGenRootTypes {
     edges: NexusGenRootTypes['Message'][]; // [Message!]!
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
+  MessageCreated: { // root type
+    message: NexusGenRootTypes['Message']; // Message!
+  }
   Mutation: {};
   PageInfo: { // root type
     endCursor: string; // String!
     hasNextPage: boolean; // Boolean!
   }
   Query: {};
+  Subscription: {};
   Token: { // root type
     token: string; // String!
   }
@@ -64,7 +68,12 @@ export interface NexusGenFieldTypes {
     edges: NexusGenRootTypes['Message'][]; // [Message!]!
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
   }
+  MessageCreated: { // field return type
+    message: NexusGenRootTypes['Message']; // Message!
+  }
   Mutation: { // field return type
+    createMessage: NexusGenRootTypes['Message']; // Message!
+    deleteMessage: NexusGenRootTypes['Message']; // Message!
     deleteUser: NexusGenRootTypes['User']; // User!
     signIn: NexusGenRootTypes['Token']; // Token!
     signUp: NexusGenRootTypes['Token']; // Token!
@@ -80,6 +89,9 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
+  Subscription: { // field return type
+    subscribe: NexusGenRootTypes['MessageCreated']; // MessageCreated!
+  }
   Token: { // field return type
     token: string; // String!
   }
@@ -94,6 +106,12 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createMessage: { // args
+      text?: string | null; // String
+    }
+    deleteMessage: { // args
+      id?: string | null; // String
+    }
     deleteUser: { // args
       id?: string | null; // String
     }
@@ -126,7 +144,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Message" | "MessageConnection" | "Mutation" | "PageInfo" | "Query" | "Token" | "User";
+export type NexusGenObjectNames = "Message" | "MessageConnection" | "MessageCreated" | "Mutation" | "PageInfo" | "Query" | "Subscription" | "Token" | "User";
 
 export type NexusGenInputNames = never;
 

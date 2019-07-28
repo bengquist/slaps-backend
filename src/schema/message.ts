@@ -2,6 +2,11 @@ import { objectType } from "nexus";
 import { User } from "./user";
 import { ObjectDefinitionBlock, stringArg, intArg } from "nexus/dist/core";
 import { fromCursorHash, toCursorHash } from "./helpers/pagination";
+import { combineResolvers } from "graphql-resolvers";
+import { isAuthenticated, isMessageOwner } from "./helpers/auth";
+import { pubsub } from "./subscriptions";
+
+export const CREATED = "CREATED";
 
 export const Message = objectType({
   name: "Message",
@@ -67,5 +72,42 @@ export const useMessageQuery = (t: ObjectDefinitionBlock<"Query">) => {
         }
       };
     }
+  });
+};
+
+export const useMessageMutation = (t: ObjectDefinitionBlock<"Mutation">) => {
+  t.field("createMessage", {
+    type: Message,
+    args: {
+      text: stringArg()
+    },
+    resolve: combineResolvers(
+      isAuthenticated,
+      async (parent, { text }, { models, me }) => {
+        const message = await models.Message.create({
+          text,
+          userId: me.id
+        });
+
+        pubsub.publish(CREATED, {
+          messageCreated: { message }
+        });
+
+        return message;
+      }
+    )
+  });
+  t.field("deleteMessage", {
+    type: Message,
+    args: {
+      id: stringArg()
+    },
+    resolve: combineResolvers(
+      isAuthenticated,
+      isMessageOwner,
+      async (parent, { id }, { models }) => {
+        return await models.Message.deleteOne({ id });
+      }
+    )
   });
 };

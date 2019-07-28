@@ -13,7 +13,13 @@ type MessageConnection {
   pageInfo: PageInfo!
 }
 
+type MessageCreated {
+  message: Message!
+}
+
 type Mutation {
+  createMessage(text: String): Message!
+  deleteMessage(id: String): Message!
   deleteUser(id: String): User!
   signIn(login: String, password: String): Token!
   signUp(email: String, password: String, username: String): Token!
@@ -30,6 +36,10 @@ type Query {
   messages(cursor: String, limit: Int): MessageConnection!
   user(id: String!): User!
   users: [User!]!
+}
+
+type Subscription {
+  subscribe: MessageCreated!
 }
 
 type Token {

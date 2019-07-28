@@ -5,6 +5,7 @@ import http from "http";
 import { ApolloServer } from "apollo-server-express";
 import { Query } from "./schema/query";
 import { Mutation } from "./schema/mutation";
+import { Subscription } from "./schema/subscriptions";
 import { makeSchema } from "nexus/dist";
 
 import models from "./models";
@@ -18,7 +19,7 @@ const app = express();
 app.use(cors());
 
 const schema = makeSchema({
-  types: [Query, Mutation],
+  types: [Query, Mutation, Subscription],
   outputs: {
     schema: __dirname + "/generated/schema.graphql",
     typegen: __dirname + "/generated/typings.ts"
