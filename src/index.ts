@@ -7,15 +7,17 @@ import { Query } from "./schema/query";
 import { Mutation } from "./schema/mutation";
 import { Subscription } from "./schema/subscriptions";
 import { makeSchema } from "nexus/dist";
-
 import models from "./models";
 import "./context/db";
 import { getMe } from "./context/helpers";
+import { ExpressContext } from "apollo-server-express/dist/ApolloServer";
+import { ExecutionParams } from "subscriptions-transport-ws";
+
+type ContextParams = ExpressContext & { connection: ExecutionParams };
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
-
 app.use(cors());
 
 const schema = makeSchema({
@@ -28,8 +30,7 @@ const schema = makeSchema({
 
 const server = new ApolloServer({
   schema,
-  //@ts-ignore
-  context: async ({ req, connection }) => {
+  context: async ({ req, connection }: ContextParams) => {
     if (connection) {
       return {
         models
