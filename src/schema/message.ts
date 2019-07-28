@@ -111,3 +111,12 @@ export const useMessageMutation = (t: ObjectDefinitionBlock<"Mutation">) => {
     )
   });
 };
+
+export const useMessageSubscription = (
+  t: ObjectDefinitionBlock<"Subscription">
+) => {
+  t.field("messageCreated", {
+    type: Message,
+    resolve: root => root
+  });
+};

@@ -11,15 +11,15 @@ export const EVENTS = {
 
 const MessageCreated = objectType({
   name: "MessageCreated",
-  definition(t) {
+  definition: t => {
     t.field("message", {
       type: Message
     });
   }
 });
 
-export const Subscription = subscriptionField("subscribe", {
+export const Subscription = subscriptionField("messageCreated", {
   type: MessageCreated,
   subscribe: () => pubsub.asyncIterator(CREATED),
-  resolve: () => pubsub.asyncIterator(CREATED)
+  resolve: ({ messageCreated }) => messageCreated
 });

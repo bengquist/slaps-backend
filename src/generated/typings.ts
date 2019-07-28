@@ -90,7 +90,7 @@ export interface NexusGenFieldTypes {
     users: NexusGenRootTypes['User'][]; // [User!]!
   }
   Subscription: { // field return type
-    subscribe: NexusGenRootTypes['MessageCreated']; // MessageCreated!
+    messageCreated: NexusGenRootTypes['MessageCreated']; // MessageCreated!
   }
   Token: { // field return type
     token: string; // String!

@@ -39,7 +39,7 @@ type Query {
 }
 
 type Subscription {
-  subscribe: MessageCreated!
+  messageCreated: MessageCreated!
 }
 
 type Token {

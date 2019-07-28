@@ -2,9 +2,9 @@ const date = new Date();
 
 export default [
   {
-    username: "rwieruch",
-    email: "hello@robin.com",
-    password: "rwieruch",
+    username: "blake",
+    email: "blake@gmail.com",
+    password: "blake",
     role: "ADMIN",
     messages: [
       {
@@ -14,9 +14,9 @@ export default [
     ]
   },
   {
-    username: "ddavids",
-    email: "hello@david.com",
-    password: "ddavids",
+    username: "jessica",
+    email: "jessica@gmail.com",
+    password: "jessica",
     messages: [
       {
         text: "Happy to release ...",
