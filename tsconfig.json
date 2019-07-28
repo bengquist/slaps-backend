@@ -8,7 +8,8 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "noUnusedLocals": true,
-    "strict": true
+    "strict": true,
+    "noImplicitAny": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.spec.ts"]
