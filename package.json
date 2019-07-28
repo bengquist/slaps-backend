@@ -17,7 +17,7 @@
   "scripts": {
     "start": "ts-node --transpile-only src/index",
     "dev": "cross-env DB_NAME=development ts-node-dev --transpile-only src/index",
-    "test-server": "cross-env DB_NAME=test ts-node-dev --transpile-only src/index",
+    "test-server": "cross-env DB_NAME=test ts-node --transpile-only src/index",
     "test": "cross-env DB_NAME=test mocha -r ts-node/register 'src/**/*.spec.ts'"
   },
   "devDependencies": {
