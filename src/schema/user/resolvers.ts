@@ -35,14 +35,16 @@ const Mutation = {
 
     return { token: createToken(user, secret, "365d") };
   },
-  signIn: async (parent, { login, password }, { models, secret }) => {
-    const user = await models.User.find({ username: login });
+  signIn: async (parent, { login, password: attempt }, { models, secret }) => {
+    const user = await models.User.findOne({
+      username: login
+    });
 
     if (!user) {
       throw new UserInputError("No user found with this login credentials.");
     }
 
-    const isValid = await validatePassword(password);
+    const isValid = await validatePassword(attempt, user.password);
 
     if (!isValid) {
       throw new AuthenticationError("Invalid password.");

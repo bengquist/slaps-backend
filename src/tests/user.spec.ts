@@ -12,7 +12,7 @@ describe("users", () => {
         },
         {
           email: "hello@david.com",
-          role: "ADMIN",
+          role: null,
           username: "ddavids"
         }
       ];
@@ -20,6 +20,22 @@ describe("users", () => {
       const result = await userApi.users();
 
       expect(result.data.users).to.eql(expected);
+    });
+  });
+  describe("deleteUser(id: String!): Boolean!", () => {
+    it("returns an error because only admins can delete a user", async () => {
+      const {
+        data: {
+          signIn: { token }
+        }
+      } = await userApi.signIn({
+        login: "ddavids",
+        password: "ddavids"
+      });
+
+      const { errors } = await userApi.deleteUser({ id: "1" }, token);
+
+      expect(errors[0].message).to.eql("Not authorized as admin.");
     });
   });
 });

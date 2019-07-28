@@ -17,7 +17,6 @@ export default [
     username: "ddavids",
     email: "hello@david.com",
     password: "ddavids",
-    role: "ADMIN",
     messages: [
       {
         text: "Happy to release ...",

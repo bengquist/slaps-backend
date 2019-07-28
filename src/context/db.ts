@@ -1,5 +1,6 @@
 import models from "../models";
 import users from "../data/users";
+import { generatePasswordHash } from "../schema/user/helpers";
 
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
@@ -19,8 +20,9 @@ if (process.env.DB_NAME === "test") {
     console.info("db cleared");
 
     await Promise.all(
-      users.map(async ({ messages, ...user }) => {
-        return models.User.create(user);
+      users.map(async ({ messages, password, ...user }) => {
+        const hashedPassword = await generatePasswordHash(password);
+        return models.User.create({ ...user, password: hashedPassword });
       })
     );
 

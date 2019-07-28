@@ -8,8 +8,9 @@ export const generatePasswordHash = async (password: string) => {
   return await bcrypt.hash(password, saltRounds);
 };
 
-export const validatePassword = async function(password: string) {
-  return await bcrypt.compare(password, this.password);
+export const validatePassword = async (attempt: string, password: string) => {
+  console.log(attempt, password);
+  return await bcrypt.compare(attempt, password);
 };
 
 export const createToken = async (
