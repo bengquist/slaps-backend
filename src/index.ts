@@ -1,4 +1,5 @@
 import "dotenv/config";
+import "./context/db";
 import cors from "cors";
 import express from "express";
 import http from "http";
@@ -8,7 +9,6 @@ import { Mutation } from "./schema/mutation";
 import { Subscription } from "./schema/subscriptions";
 import { makeSchema } from "nexus/dist";
 import models from "./models";
-import "./context/db";
 import { getMe } from "./context/helpers";
 import { ExpressContext } from "apollo-server-express/dist/ApolloServer";
 import { ExecutionParams } from "subscriptions-transport-ws";
