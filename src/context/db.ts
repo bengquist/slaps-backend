@@ -1,5 +1,5 @@
 import models from "../models";
-import users from "../data/users";
+import users from "../tests/data/users";
 import { generatePasswordHash } from "../schema/helpers/auth";
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;

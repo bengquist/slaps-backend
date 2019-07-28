@@ -112,11 +112,20 @@ export const useMessageMutation = (t: ObjectDefinitionBlock<"Mutation">) => {
   });
 };
 
+const MessageCreated = objectType({
+  name: "messageCreated",
+  definition: t => {
+    t.field("message", {
+      type: Message
+    });
+  }
+});
+
 export const useMessageSubscription = (
   t: ObjectDefinitionBlock<"Subscription">
 ) => {
   t.field("messageCreated", {
-    type: Message,
+    type: MessageCreated,
     resolve: root => root
   });
 };
