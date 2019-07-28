@@ -9,7 +9,6 @@ export const generatePasswordHash = async (password: string) => {
 };
 
 export const validatePassword = async (attempt: string, password: string) => {
-  console.log(attempt, password);
   return await bcrypt.compare(attempt, password);
 };
 

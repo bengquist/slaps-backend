@@ -13,6 +13,12 @@ type MessageConnection {
   pageInfo: PageInfo!
 }
 
+type Mutation {
+  deleteUser(id: String): User!
+  signIn(login: String, password: String): Token!
+  signUp(email: String, password: String, username: String): Token!
+}
+
 type PageInfo {
   endCursor: String!
   hasNextPage: Boolean!
@@ -24,6 +30,10 @@ type Query {
   messages(cursor: String, limit: Int): MessageConnection!
   user(id: String!): User!
   users: [User!]!
+}
+
+type Token {
+  token: String!
 }
 
 type User {

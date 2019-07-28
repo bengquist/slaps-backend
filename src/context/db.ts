@@ -1,7 +1,6 @@
 import models from "../models";
 import users from "../data/users";
-import { generatePasswordHash } from "../schema/user/helpers";
-
+import { generatePasswordHash } from "../schema/helpers/auth";
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 

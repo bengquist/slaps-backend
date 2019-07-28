@@ -1,12 +1,7 @@
 import { objectType } from "nexus";
 import { User } from "./user";
 import { ObjectDefinitionBlock, stringArg, intArg } from "nexus/dist/core";
-
-export const toCursorHash = (string: string) =>
-  Buffer.from(string).toString("base64");
-
-export const fromCursorHash = (string: string) =>
-  Buffer.from(string, "base64").toString("ascii");
+import { fromCursorHash, toCursorHash } from "./helpers/pagination";
 
 export const Message = objectType({
   name: "Message",
