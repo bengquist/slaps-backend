@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { AuthenticationError } from "apollo-server-core";
 
 export const getMe = async (req: any) => {
-  const token = req.headers["x-token"];
+  const token = req.headers["authorization"];
 
   if (token) {
     try {

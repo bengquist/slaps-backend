@@ -67,7 +67,7 @@ export const deleteUser = async (variables: { id: string }, token: string) => {
     },
     {
       headers: {
-        "x-token": token
+        authorization: token
       }
     }
   );
