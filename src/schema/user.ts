@@ -16,6 +16,10 @@ export const User = objectType({
     t.id("_id");
     t.string("username");
     t.string("email");
+    t.string("firstName");
+    t.string("lastName");
+    t.string("location");
+    t.string("bio");
     t.string("role", { nullable: true });
     t.list.field("messages", { type: Message });
   }
@@ -32,7 +36,7 @@ export const useUserQuery = (t: ObjectDefinitionBlock<"Query">) => {
   t.field("user", {
     type: User,
     args: {
-      id: stringArg({ nullable: false })
+      id: stringArg()
     },
     resolve: async (parent, { id }, { models }) => {
       return await models.User.findById(id);
@@ -106,6 +110,35 @@ export const useUserMutation = (t: ObjectDefinitionBlock<"Mutation">) => {
       }
 
       return { token: createToken(user, secret, "365d") };
+    }
+  });
+  t.field("updateUser", {
+    type: User,
+    args: {
+      firstName: stringArg({ nullable: true }),
+      lastName: stringArg({ nullable: true }),
+      location: stringArg({ nullable: true }),
+      bio: stringArg({ nullable: true }),
+      image: stringArg({ nullable: true })
+    },
+    resolve: async (
+      parent,
+      { firstName, lastName, location, bio, image },
+      { me, models }
+    ) => {
+      const user = await models.User.findByIdAndUpdate(
+        me.id,
+        {
+          firstName,
+          lastName,
+          location,
+          bio,
+          image
+        },
+        { new: true }
+      );
+
+      return user;
     }
   });
   t.field("deleteUser", {

@@ -5,6 +5,11 @@ export default new Schema({
   username: String,
   email: String!,
   password: String!,
+  firstName: String,
+  lastName: String,
+  location: String,
+  bio: String,
+  image: String,
   messageIds: [Number],
   role: String
 });

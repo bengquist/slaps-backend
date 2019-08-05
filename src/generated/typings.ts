@@ -43,7 +43,11 @@ export interface NexusGenRootTypes {
   }
   User: { // root type
     _id: string; // ID!
+    bio: string; // String!
     email: string; // String!
+    firstName: string; // String!
+    lastName: string; // String!
+    location: string; // String!
     messages: NexusGenRootTypes['Message'][]; // [Message!]!
     role?: string | null; // String
     username: string; // String!
@@ -77,6 +81,7 @@ export interface NexusGenFieldTypes {
     deleteUser: NexusGenRootTypes['User']; // User!
     signIn: NexusGenRootTypes['Token']; // Token!
     signUp: NexusGenRootTypes['Token']; // Token!
+    updateUser: NexusGenRootTypes['User']; // User!
   }
   PageInfo: { // field return type
     endCursor: string; // String!
@@ -97,7 +102,11 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     _id: string; // ID!
+    bio: string; // String!
     email: string; // String!
+    firstName: string; // String!
+    lastName: string; // String!
+    location: string; // String!
     messages: NexusGenRootTypes['Message'][]; // [Message!]!
     role: string | null; // String
     username: string; // String!
@@ -124,6 +133,13 @@ export interface NexusGenArgTypes {
       password?: string | null; // String
       username?: string | null; // String
     }
+    updateUser: { // args
+      bio?: string | null; // String
+      firstName?: string | null; // String
+      image?: string | null; // String
+      lastName?: string | null; // String
+      location?: string | null; // String
+    }
   }
   Query: {
     message: { // args
@@ -134,7 +150,7 @@ export interface NexusGenArgTypes {
       limit?: number | null; // Int
     }
     user: { // args
-      id: string; // String!
+      id?: string | null; // String
     }
   }
 }
