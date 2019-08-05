@@ -10,6 +10,7 @@ export default new Schema({
   location: String,
   bio: String,
   image: String,
+  followingIds: [String],
   messageIds: [Number],
   role: String
 });
