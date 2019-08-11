@@ -1,14 +1,25 @@
 import { Schema } from "mongoose";
 
 export default new Schema({
-  id: String,
-  username: String,
-  email: String!,
+  username: { type: String!, unique: true },
+  email: { type: String!, unique: true },
   password: String!,
-  firstName: String,
-  lastName: String,
-  location: String,
-  bio: String,
+  firstName: {
+    type: String,
+    default: ""
+  },
+  lastName: {
+    type: String,
+    default: ""
+  },
+  location: {
+    type: String,
+    default: ""
+  },
+  bio: {
+    type: String,
+    default: ""
+  },
   image: String,
   followingIds: [String],
   messageIds: [Number],
