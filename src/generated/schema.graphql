@@ -52,6 +52,7 @@ type User {
   bio: String!
   email: String!
   firstName: String!
+  image: String!
   lastName: String!
   location: String!
   messages: [Message!]!

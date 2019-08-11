@@ -46,6 +46,7 @@ export interface NexusGenRootTypes {
     bio: string; // String!
     email: string; // String!
     firstName: string; // String!
+    image: string; // String!
     lastName: string; // String!
     location: string; // String!
     messages: NexusGenRootTypes['Message'][]; // [Message!]!
@@ -105,6 +106,7 @@ export interface NexusGenFieldTypes {
     bio: string; // String!
     email: string; // String!
     firstName: string; // String!
+    image: string; // String!
     lastName: string; // String!
     location: string; // String!
     messages: NexusGenRootTypes['Message'][]; // [Message!]!

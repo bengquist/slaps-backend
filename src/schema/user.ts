@@ -20,6 +20,7 @@ export const User = objectType({
     t.string("lastName");
     t.string("location");
     t.string("bio");
+    t.string("image");
     t.string("role", { nullable: true });
     t.list.field("messages", { type: Message });
   }
@@ -73,6 +74,10 @@ export const useUserMutation = (t: ObjectDefinitionBlock<"Mutation">) => {
       { username, email, password },
       { models, secret }
     ) => {
+      if (!username || !email || !password) {
+        throw new UserInputError("Must enter required fields");
+      }
+
       const hashedPassword = await generatePasswordHash(password);
 
       const user = await models.User.create({
@@ -123,7 +128,7 @@ export const useUserMutation = (t: ObjectDefinitionBlock<"Mutation">) => {
     },
     resolve: async (
       parent,
-      { firstName, lastName, location, bio, image },
+      { firstName = "", lastName = "", location = "", bio = "", image = "" },
       { me, models }
     ) => {
       const user = await models.User.findByIdAndUpdate(
