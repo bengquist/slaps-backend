@@ -22,6 +22,10 @@ export const User = objectType({
     t.string("bio", { nullable: true });
     t.string("image", { nullable: true });
     t.string("role", { nullable: true });
+    t.string("twitter", { nullable: true });
+    t.string("facebook", { nullable: true });
+    t.string("instagram", { nullable: true });
+    t.string("soundcloud", { nullable: true });
     t.list.field("messages", { type: Message });
   }
 });

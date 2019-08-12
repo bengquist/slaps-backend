@@ -51,11 +51,15 @@ type User {
   _id: ID!
   bio: String
   email: String!
+  facebook: String
   firstName: String
   image: String
+  instagram: String
   lastName: String
   location: String
   messages: [Message!]!
   role: String
+  soundcloud: String
+  twitter: String
   username: String!
 }

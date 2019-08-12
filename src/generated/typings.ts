@@ -45,12 +45,16 @@ export interface NexusGenRootTypes {
     _id: string; // ID!
     bio?: string | null; // String
     email: string; // String!
+    facebook?: string | null; // String
     firstName?: string | null; // String
     image?: string | null; // String
+    instagram?: string | null; // String
     lastName?: string | null; // String
     location?: string | null; // String
     messages: NexusGenRootTypes['Message'][]; // [Message!]!
     role?: string | null; // String
+    soundcloud?: string | null; // String
+    twitter?: string | null; // String
     username: string; // String!
   }
   String: string;
@@ -105,12 +109,16 @@ export interface NexusGenFieldTypes {
     _id: string; // ID!
     bio: string | null; // String
     email: string; // String!
+    facebook: string | null; // String
     firstName: string | null; // String
     image: string | null; // String
+    instagram: string | null; // String
     lastName: string | null; // String
     location: string | null; // String
     messages: NexusGenRootTypes['Message'][]; // [Message!]!
     role: string | null; // String
+    soundcloud: string | null; // String
+    twitter: string | null; // String
     username: string; // String!
   }
 }
