@@ -43,12 +43,12 @@ export interface NexusGenRootTypes {
   }
   User: { // root type
     _id: string; // ID!
-    bio: string; // String!
+    bio?: string | null; // String
     email: string; // String!
-    firstName: string; // String!
-    image: string; // String!
-    lastName: string; // String!
-    location: string; // String!
+    firstName?: string | null; // String
+    image?: string | null; // String
+    lastName?: string | null; // String
+    location?: string | null; // String
     messages: NexusGenRootTypes['Message'][]; // [Message!]!
     role?: string | null; // String
     username: string; // String!
@@ -103,12 +103,12 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     _id: string; // ID!
-    bio: string; // String!
+    bio: string | null; // String
     email: string; // String!
-    firstName: string; // String!
-    image: string; // String!
-    lastName: string; // String!
-    location: string; // String!
+    firstName: string | null; // String
+    image: string | null; // String
+    lastName: string | null; // String
+    location: string | null; // String
     messages: NexusGenRootTypes['Message'][]; // [Message!]!
     role: string | null; // String
     username: string; // String!

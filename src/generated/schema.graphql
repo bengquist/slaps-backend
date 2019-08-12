@@ -49,12 +49,12 @@ type Token {
 
 type User {
   _id: ID!
-  bio: String!
+  bio: String
   email: String!
-  firstName: String!
-  image: String!
-  lastName: String!
-  location: String!
+  firstName: String
+  image: String
+  lastName: String
+  location: String
   messages: [Message!]!
   role: String
   username: String!

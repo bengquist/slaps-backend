@@ -20,7 +20,10 @@ export default new Schema({
     type: String,
     default: ""
   },
-  image: String,
+  image: {
+    type: String,
+    default: ""
+  },
   followingIds: [String],
   messageIds: [Number],
   role: String

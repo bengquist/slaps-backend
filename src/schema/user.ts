@@ -16,11 +16,11 @@ export const User = objectType({
     t.id("_id");
     t.string("username");
     t.string("email");
-    t.string("firstName");
-    t.string("lastName");
-    t.string("location");
-    t.string("bio");
-    t.string("image");
+    t.string("firstName", { nullable: true });
+    t.string("lastName", { nullable: true });
+    t.string("location", { nullable: true });
+    t.string("bio", { nullable: true });
+    t.string("image", { nullable: true });
     t.string("role", { nullable: true });
     t.list.field("messages", { type: Message });
   }
@@ -105,13 +105,13 @@ export const useUserMutation = (t: ObjectDefinitionBlock<"Mutation">) => {
       });
 
       if (!user) {
-        throw new UserInputError("No user found with this login credentials.");
+        throw new UserInputError("Invalid email or username");
       }
 
       const isValid = await validatePassword(attempt, user.password);
 
       if (!isValid) {
-        throw new AuthenticationError("Invalid password.");
+        throw new AuthenticationError("Invalid password");
       }
 
       return { token: createToken(user, secret, "365d") };
