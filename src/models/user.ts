@@ -24,6 +24,22 @@ export default new Schema({
     type: String,
     default: ""
   },
+  twitter: {
+    type: String,
+    default: ""
+  },
+  facebook: {
+    type: String,
+    default: ""
+  },
+  instagram: {
+    type: String,
+    default: ""
+  },
+  soundcloud: {
+    type: String,
+    default: ""
+  },
   followingIds: [String],
   messageIds: [Number],
   role: String
